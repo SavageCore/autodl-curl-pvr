@@ -14,5 +14,14 @@ upload-args = "$(TorrentName)" "$(TorrentUrl)" API_KEY
 ```
 You can set up autodl-irssi filters to simply match everything and let Sonarr decide what it should download based upon your Sonarr configuration.
 
+Optionally you can set the indexer which we recommend doing under `[filter]`:
+
+```
+[filter All BTN to Sonarr]
+match-sites = btn
+upload-command = /home/savagecore/scripts/autodl-curl-sonarr.sh
+upload-args = "$(TorrentName)" "$(TorrentUrl)" API_KEY "BroadcastheNet"
+upload-type = exec
+```
 
 Note on lidarr support: Lidarr needs api/v1/push/release rather than just api/push/release like radarr/sonarr.
