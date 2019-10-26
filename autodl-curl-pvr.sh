@@ -11,10 +11,25 @@ lidarrBaseUrl="http://localhost:8686"
 radarrBaseUrl="http://localhost:7878"
 sonarrBaseUrl="http://localhost:8989"
 
+log_error() {
+    echo "[$(date --rfc-3339=seconds)] $1" >>error.log
+}
+
 post_release() {
-    {
-        /usr/bin/curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "X-Api-Key: $apiKey" -X POST -d "$1" $apiUrl
-    } &>/dev/null
+    status=$(curl --connect-timeout 5 --write-out %{http_code} --silent --output /dev/null -i -H "Accept: application/json" -H "Content-Type: application/json" -H "X-Api-Key: $apiKey" -X POST -d "$1" $apiUrl)
+    if [ "$status" == 200 ]; then
+        exit 0
+    elif [ "$status" == 303 ]; then
+        log_error "[FATAL] Error 303 response from API - perhaps you need to setup base-url?"
+        exit 1
+    elif [ "$status" == 000 ]; then
+        log_error "[FATAL] Unable to connect to \"$apiUrl\""
+        exit 1
+    else
+        log_error "[ERROR] Unknown error occured with status $status"
+        log_error "curl --connect-timeout 5 --write-out %{http_code} --silent --output /dev/null -i -H \"Accept: application/json\" -H \"Content-Type: application/json\" -H \"X-Api-Key: $apiKey\" -X POST -d \"$1\" $apiUrl"
+        exit 1
+    fi
 }
 
 check_base_url() {
@@ -33,10 +48,7 @@ check_base_url() {
 }
 
 get_api_url() {
-    if [ -z "$pvr" ]; then
-        echo 'No PVR set'
-        exit
-    fi
+    check_base_url
 
     if [ "$pvr" == "lidarr" ]; then
         apiUrl="$lidarrBaseUrl/api/v1/release/push"
@@ -44,26 +56,32 @@ get_api_url() {
         apiUrl="$radarrBaseUrl/api/release/push"
     elif [ "$pvr" == "sonarr" ]; then
         apiUrl="$sonarrBaseUrl/api/release/push"
+    else
+        log_error "[FATAL] Unable to determine API URL for \"$pvr\""
+        exit 1
     fi
 }
 
 get_api_key() {
     if [ ! -r "keys/$pvr.key" ]; then
-        echo "keys/$pvr.key does not exist or is not readable"
+        log_error "[FATAL] Error reading API Key for \"$pvr\" [keys/$pvr.key]"
         exit 1
     fi
     apiKey=$(<keys/$pvr.key)
 }
 
-get_api_key
+if [ -z "$pvr" ]; then
+    log_error "[FATAL] No PVR set"
+    exit 1
+fi
 
-check_base_url
+get_api_key
 
 get_api_url
 
 if [ -z "$indexer" ]; then
     post_release '{"title":"'"$title"'","downloadUrl":"'"$downloadUrl"'","protocol":"torrent","publishDate":"'"$date"'"}'
-    exit
+    exit 0
 fi
 
 post_release '{"title":"'"$title"'","downloadUrl":"'"$downloadUrl"'","protocol":"torrent","publishDate":"'"$date"'","indexer":"'"$indexer"'"}'
