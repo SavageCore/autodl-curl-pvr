@@ -22,6 +22,8 @@ $ wget https://raw.githubusercontent.com/SavageCore/autodl-curl-pvr/master/keys/
 $ nano sonarr.key
 ```
 
+Depending on your setup you may need to change base url, you can do so by copying `base-urls.cfg.example` to `base-urls.cfg` and editing to your needs. Useful if you run PVR behind reverse proxy.
+
 ## Usage
 
 > ⚠️ Take note of the first argument as that is required, possible values [below](#supported-pvrs) ⚠️
