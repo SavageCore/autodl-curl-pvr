@@ -37,9 +37,9 @@ get_api_key() {
     apiKey=$(<keys/$pvr.key)
 }
 
-get_api_url
-
 get_api_key
+
+get_api_url
 
 if [ -z "$indexer" ]; then
     post_release '{"title":"'"$title"'","downloadUrl":"'"$downloadUrl"'","protocol":"torrent","publishDate":"'"$date"'"}'
