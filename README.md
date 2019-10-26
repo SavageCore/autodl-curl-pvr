@@ -13,6 +13,15 @@ $ wget https://github.com/SavageCore/autodl-curl-pvr/raw/master/autodl-curl-pvr.
 $ chmod +x autodl-curl-pvr.sh
 ```
 
+Next we shall setup api keys, they need to be in a directory called `keys` where your script is installed. Copy the `.example` file to `.key` and insert key
+
+```
+$ mkdir keys
+$ cd keys
+$ wget https://raw.githubusercontent.com/SavageCore/autodl-curl-pvr/master/keys/sonarr.key.example -o sonarr.key
+$ nano sonarr.key
+```
+
 ## Usage
 
 > ⚠️ Take note of the first argument as that is required, possible values [below](#supported-pvrs) ⚠️
