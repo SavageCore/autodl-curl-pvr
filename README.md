@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-[autodl-irssi](https://github.com/autodl-community), `curl` and one of the [supported](#supported-pvrs) PVRs
+[autodl-irssi](https://github.com/autodl-community/autodl-irssi), `curl` and one of the [supported](#supported-pvrs) PVRs
 
 ## Install
 
