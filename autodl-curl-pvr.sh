@@ -7,11 +7,29 @@ date=$(date -u +"%Y-%m-%d %H:%M:%SZ")
 indexer=$4
 apiUrl="null"
 apiKey="null"
+lidarrBaseUrl="http://localhost:8686"
+radarrBaseUrl="http://localhost:7878"
+sonarrBaseUrl="http://localhost:8989"
 
 post_release() {
     {
         /usr/bin/curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "X-Api-Key: $apiKey" -X POST -d "$1" $apiUrl
     } &>/dev/null
+}
+
+check_base_url() {
+    if [ -r "base-urls.cfg" ]; then
+        source base-urls.cfg
+        if [ ! -z "$lidarr" ]; then
+            lidarrBaseUrl=$lidarr
+        fi
+        if [ ! -z "$radarr" ]; then
+            radarrBaseUrl=$radarr
+        fi
+        if [ ! -z "$sonarr" ]; then
+            sonarrBaseUrl=$sonarr
+        fi
+    fi
 }
 
 get_api_url() {
@@ -21,11 +39,11 @@ get_api_url() {
     fi
 
     if [ "$pvr" == "lidarr" ]; then
-        apiUrl="http://localhost:8686/api/v1/release/push"
+        apiUrl="$lidarrBaseUrl/api/v1/release/push"
     elif [ "$pvr" == "radarr" ]; then
-        apiUrl="http://localhost:7878/api/release/push"
+        apiUrl="$radarrBaseUrl/api/release/push"
     elif [ "$pvr" == "sonarr" ]; then
-        apiUrl="http://localhost:8989/api/release/push"
+        apiUrl="$sonarrBaseUrl/api/release/push"
     fi
 }
 
@@ -38,6 +56,8 @@ get_api_key() {
 }
 
 get_api_key
+
+check_base_url
 
 get_api_url
 

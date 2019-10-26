@@ -1,2 +1,3 @@
 keys/*
 !keys/*.example
+base-urls.cfg

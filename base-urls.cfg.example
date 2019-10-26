@@ -1,0 +1,3 @@
+lidarr=http://localhost:8686/lidarr
+radarr=http://localhost:7878/radarr
+sonarr=http://localhost:8989/sonarr
