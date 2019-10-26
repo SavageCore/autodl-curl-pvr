@@ -1,11 +1,9 @@
 # autodl-curl-pvr
 
-Script to use as upload-command for autodl-irssi to post torrents to Sonarr and Radarr.
+Script to use as upload-command for autodl-irssi to post torrents to Lidarr, Radarr or Sonarr.
 
 Obviously you will need [autodl-irssi](https://github.com/autodl-community) installed and curl then one or all of the following:
-[Lidarr](https://lidarr.audio/)
-[Radarr](https://radarr.video/)
-[Sonarr](https://sonarr.tv/)
+[Lidarr](https://lidarr.audio/)/[Radarr](https://radarr.video/)/[Sonarr](https://sonarr.tv/)
 
 Download autodl-curl-pvr.sh and put it wherever you want. You may need to edit the address for Lidarr/Radarr/Sonarr, by default it is `localhost:port`. See https://github.com/Sonarr/Sonarr/wiki/API. Make the script executable for the user running autodl-irssi.
 
