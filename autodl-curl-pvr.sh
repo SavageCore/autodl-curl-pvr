@@ -3,10 +3,10 @@
 pvr=$1
 title=$2
 downloadUrl=$3
-apiKey=$4
 date=$(date -u +"%Y-%m-%d %H:%M:%SZ")
-indexer=$5
+indexer=$4
 apiUrl="null"
+apiKey="null"
 
 post_release() {
     {
@@ -29,7 +29,17 @@ get_api_url() {
     fi
 }
 
+get_api_key() {
+    if [ ! -r "keys/$pvr.key" ]; then
+        echo "keys/$pvr.key does not exist or is not readable"
+        exit 1
+    fi
+    apiKey=$(<keys/$pvr.key)
+}
+
 get_api_url
+
+get_api_key
 
 if [ -z "$indexer" ]; then
     post_release '{"title":"'"$title"'","downloadUrl":"'"$downloadUrl"'","protocol":"torrent","publishDate":"'"$date"'"}'
