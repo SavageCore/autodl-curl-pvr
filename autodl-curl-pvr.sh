@@ -23,7 +23,7 @@ get_api_url() {
     if [ "$pvr" == "radarr" ]; then
         apiUrl="http://localhost:7878/api/release/push"
     elif [ "$pvr" == "sonarr" ]; then
-        apiUrl="http://localhost:8989/sonarr/api/release/push"
+        apiUrl="http://localhost:8989/api/release/push"
     fi
 }
 
